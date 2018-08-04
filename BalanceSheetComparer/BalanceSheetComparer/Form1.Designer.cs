@@ -47,7 +47,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(79, 71);
+            this.label2.Location = new System.Drawing.Point(79, 75);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(117, 13);
             this.label2.TabIndex = 1;
@@ -57,14 +57,14 @@
             // 
             this.firstBalanceSheet.Location = new System.Drawing.Point(242, 38);
             this.firstBalanceSheet.Name = "firstBalanceSheet";
-            this.firstBalanceSheet.Size = new System.Drawing.Size(100, 20);
+            this.firstBalanceSheet.Size = new System.Drawing.Size(264, 20);
             this.firstBalanceSheet.TabIndex = 2;
             // 
             // secondBalanceSheeet
             // 
-            this.secondBalanceSheeet.Location = new System.Drawing.Point(242, 68);
+            this.secondBalanceSheeet.Location = new System.Drawing.Point(242, 72);
             this.secondBalanceSheeet.Name = "secondBalanceSheeet";
-            this.secondBalanceSheeet.Size = new System.Drawing.Size(100, 20);
+            this.secondBalanceSheeet.Size = new System.Drawing.Size(264, 20);
             this.secondBalanceSheeet.TabIndex = 3;
             // 
             // generateReport
