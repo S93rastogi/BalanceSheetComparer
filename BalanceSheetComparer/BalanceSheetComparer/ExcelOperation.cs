@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
-using System.Runtime.InteropServices;
 using System.Text;
-using Excel = Microsoft.Office.Interop.Excel;
+using System.IO;
 
 namespace BalanceSheetComparer
 {
@@ -28,6 +27,26 @@ namespace BalanceSheetComparer
             //props["Extended Properties"] = "Excel 8.0";
             //props["Data Source"] = "C:\\MyExcel.xls";
             #endregion XLS - Excel 2003 and Older
+
+            var connectionString = new StringBuilder();
+            foreach (KeyValuePair<string, string> prop in databaseProperties)
+            {
+                connectionString.Append(prop.Key);
+                connectionString.Append('=');
+                connectionString.Append(prop.Value);
+                connectionString.Append(';');
+            }
+            return connectionString.ToString();
+        }
+
+        private string WriteFileConnectionString(string filePath)
+        {
+            var databaseProperties = new Dictionary<string, string>();
+
+            // XLSX - Excel 2007, 2010, 2012, 2013
+            databaseProperties["Provider"] = "Microsoft.ACE.OLEDB.12.0;";
+            databaseProperties["Extended Properties"] = "'Excel 12.0 XML; HDR=NO;'";
+            databaseProperties["Data Source"] = filePath;
 
             var connectionString = new StringBuilder();
             foreach (KeyValuePair<string, string> prop in databaseProperties)
@@ -85,6 +104,8 @@ namespace BalanceSheetComparer
 
             var secondFileDebits = AllDebits(secondFileExcelData.Rows);
             var secondFileCredits = AllCredits(secondFileExcelData.Rows);
+
+            CompareAndWriteFile();
         }
 
         private List<double> AllDebits(DataRowCollection dataRowCollection)
@@ -131,6 +152,35 @@ namespace BalanceSheetComparer
                 }
             }
             return credits;
+        }
+
+        private void CompareAndWriteFile()
+        {
+            var writeFilePath = System.Windows.Forms.Application.StartupPath + "\\ComparedResults.xlsx";
+            var connectionString = WriteFileConnectionString(writeFilePath);
+            if (File.Exists(writeFilePath))
+                File.Delete(writeFilePath);
+
+            using (var connection = new OleDbConnection(connectionString))
+            {
+                connection.Open();
+                var command = new OleDbCommand();
+                command.Connection = connection;
+
+                command.CommandText = "CREATE TABLE [table1] (Information VARCHAR, results NUMBER);";
+                command.ExecuteNonQuery();
+
+                command.CommandText = "INSERT INTO [table1] VALUES('total Debits', 1232.052);";
+                command.ExecuteNonQuery();
+
+                command.CommandText = "INSERT INTO [table1] VALUES('total Credits', 912532.052);";
+                command.ExecuteNonQuery();
+
+                command.CommandText = "INSERT INTO [table1] VALUES('', 89564.55);";
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
         }
     }
 }
