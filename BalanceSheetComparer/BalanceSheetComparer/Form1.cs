@@ -17,6 +17,7 @@ namespace BalanceSheetComparer
             ExcelOperation excel = new ExcelOperation();
             var firstFileExcelData = excel.ReadExcelFile(firstFilePath).Tables[0];
             var secondFileExcelData = excel.ReadExcelFile(secondFilePath).Tables[0];
+            excel.CompareFiles(firstFileExcelData, secondFileExcelData);
         }
     }
 }
