@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.secondBalanceSheet = new System.Windows.Forms.TextBox();
+            this.firstBalanceSheet = new System.Windows.Forms.TextBox();
             this.secondBalanceSheeet = new System.Windows.Forms.TextBox();
             this.generateReport = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -53,12 +53,12 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Second Balance Sheet";
             // 
-            // secondBalanceSheet
+            // firstBalanceSheet
             // 
-            this.secondBalanceSheet.Location = new System.Drawing.Point(242, 38);
-            this.secondBalanceSheet.Name = "secondBalanceSheet";
-            this.secondBalanceSheet.Size = new System.Drawing.Size(100, 20);
-            this.secondBalanceSheet.TabIndex = 2;
+            this.firstBalanceSheet.Location = new System.Drawing.Point(242, 38);
+            this.firstBalanceSheet.Name = "firstBalanceSheet";
+            this.firstBalanceSheet.Size = new System.Drawing.Size(100, 20);
+            this.firstBalanceSheet.TabIndex = 2;
             // 
             // secondBalanceSheeet
             // 
@@ -75,6 +75,7 @@
             this.generateReport.TabIndex = 4;
             this.generateReport.Text = "Generate Report";
             this.generateReport.UseVisualStyleBackColor = true;
+            this.generateReport.Click += new System.EventHandler(this.generateReport_Click);
             // 
             // Form1
             // 
@@ -83,7 +84,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.generateReport);
             this.Controls.Add(this.secondBalanceSheeet);
-            this.Controls.Add(this.secondBalanceSheet);
+            this.Controls.Add(this.firstBalanceSheet);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
@@ -97,7 +98,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox secondBalanceSheet;
+        private System.Windows.Forms.TextBox firstBalanceSheet;
         private System.Windows.Forms.TextBox secondBalanceSheeet;
         private System.Windows.Forms.Button generateReport;
     }
