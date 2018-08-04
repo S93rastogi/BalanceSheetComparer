@@ -12,8 +12,11 @@ namespace BalanceSheetComparer
 
         private void generateReport_Click(object sender, EventArgs e)
         {
+            var firstFilePath = firstBalanceSheet.Text;
+            var secondFilePath = secondBalanceSheeet.Text;
             ExcelOperation excel = new ExcelOperation();
-            var excelData = excel.ReadExcelFile().Tables[0];
+            var firstFileExcelData = excel.ReadExcelFile(firstFilePath).Tables[0];
+            var secondFileExcelData = excel.ReadExcelFile(secondFilePath).Tables[0];
         }
     }
 }

@@ -9,14 +9,15 @@ namespace BalanceSheetComparer
 {
     class ExcelOperation
     {
-        private string GetConnectionString()
+        private string GetConnectionString(string filePath)
         {
             var databaseProperties = new Dictionary<string, string>();
 
             // XLSX - Excel 2007, 2010, 2012, 2013
             databaseProperties["Provider"] = "Microsoft.ACE.OLEDB.12.0;";
             databaseProperties["Extended Properties"] = "Excel 12.0 XML";
-            databaseProperties["Data Source"] = "D:\\Bank Statement Dr Side.xlsx";
+            databaseProperties["Data Source"] = filePath;
+            //databaseProperties["Data Source"] = "D:\\Bank Statement Dr Side.xlsx";
 
             #region XLS - Excel 2003 and Older
             // XLS - Excel 2003 and Older
@@ -36,10 +37,10 @@ namespace BalanceSheetComparer
             return connectionString.ToString();
         }
 
-        public DataSet ReadExcelFile()
+        public DataSet ReadExcelFile(string filePath)
         {
             var dataSet = new DataSet();
-            var connectionString = GetConnectionString();
+            var connectionString = GetConnectionString(filePath);
             using (var connection = new OleDbConnection(connectionString))
             {
                 connection.Open();
