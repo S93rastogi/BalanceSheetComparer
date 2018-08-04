@@ -12,6 +12,8 @@ namespace BalanceSheetComparer
     {
         private readonly string _firstFile;
         private readonly string _secondFile;
+        private readonly DataTable _firstFileData;
+        private readonly DataTable _secondFileData;
         private const int debitColumnIndex = 2;
         private const int creditColumnIndex = 3;
 
@@ -21,6 +23,8 @@ namespace BalanceSheetComparer
         {
             _firstFile = firstFile;
             _secondFile = secondFile;
+            _firstFileData = ReadExcelFile(_firstFile).Tables[0];
+            _secondFileData = ReadExcelFile(_secondFile).Tables[0];
         }
 
         private string GetConnectionString(string filePath)
@@ -70,7 +74,7 @@ namespace BalanceSheetComparer
             return connectionString.ToString();
         }
 
-        public DataSet ReadExcelFile(string filePath)
+        private DataSet ReadExcelFile(string filePath)
         {
             var dataSet = new DataSet();
             var connectionString = GetConnectionString(filePath);
@@ -106,15 +110,13 @@ namespace BalanceSheetComparer
             return dataSet;
         }
 
-        public void CompareFiles(
-            DataTable firstFileExcelData,
-            DataTable secondFileExcelData)
+        public void CompareFiles()
         {
-            var firstFileDebits = AllDebits(firstFileExcelData.Rows);
-            var firstFileCredits = AllCredits(firstFileExcelData.Rows);
+            var firstFileDebits = AllDebits(_firstFileData.Rows);
+            var firstFileCredits = AllCredits(_firstFileData.Rows);
 
-            var secondFileDebits = AllDebits(secondFileExcelData.Rows);
-            var secondFileCredits = AllCredits(secondFileExcelData.Rows);
+            var secondFileDebits = AllDebits(_secondFileData.Rows);
+            var secondFileCredits = AllCredits(_secondFileData.Rows);
 
             var queries = GenerateQueryForUnMatchedData(
                 firstFileDebits,

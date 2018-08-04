@@ -14,10 +14,11 @@ namespace BalanceSheetComparer
         {
             var firstFilePath = firstBalanceSheet.Text;
             var secondFilePath = secondBalanceSheeet.Text;
-            ExcelOperation excel = new ExcelOperation(firstFilePath, secondFilePath);
-            var firstFileExcelData = excel.ReadExcelFile(firstFilePath).Tables[0];
-            var secondFileExcelData = excel.ReadExcelFile(secondFilePath).Tables[0];
-            excel.CompareFiles(firstFileExcelData, secondFileExcelData);
+
+            ExcelOperation excel = 
+                new ExcelOperation(firstFilePath, secondFilePath);
+
+            excel.CompareFiles();
             MessageBox.Show("Success");
         }
     }
