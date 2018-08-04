@@ -12,7 +12,8 @@ namespace BalanceSheetComparer
 
         private void generateReport_Click(object sender, EventArgs e)
         {
-
+            ExcelOperation excel = new ExcelOperation();
+            var excelData = excel.ReadExcelFile().Tables[0];
         }
     }
 }

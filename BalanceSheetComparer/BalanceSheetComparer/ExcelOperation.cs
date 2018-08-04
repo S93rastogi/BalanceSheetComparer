@@ -35,5 +35,41 @@ namespace BalanceSheetComparer
             }
             return connectionString.ToString();
         }
+
+        public DataSet ReadExcelFile()
+        {
+            var dataSet = new DataSet();
+            var connectionString = GetConnectionString();
+            using (var connection = new OleDbConnection(connectionString))
+            {
+                connection.Open();
+                var command = new OleDbCommand();
+                command.Connection = connection;
+
+                // Get all Sheets in Excel File
+                DataTable dtSheet = connection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+
+                // Loop through all Sheets to get data
+                foreach (DataRow dataRow in dtSheet.Rows)
+                {
+                    var sheetName = dataRow["TABLE_NAME"].ToString();
+                    if (!sheetName.EndsWith("$"))
+                        continue;
+
+                    // Get all rows from the Sheet
+                    command.CommandText = "SELECT * FROM [" + sheetName + "]";
+
+                    var dataTable = new DataTable();
+                    dataTable.TableName = sheetName;
+
+                    var dataAdapter = new OleDbDataAdapter(command);
+                    dataAdapter.Fill(dataTable);
+                    dataSet.Tables.Add(dataTable);
+                }
+                command = null;
+                connection.Close();
+            }
+            return dataSet;
+        }
     }
 }
