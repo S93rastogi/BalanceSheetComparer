@@ -18,6 +18,7 @@ namespace BalanceSheetComparer
             var firstFileExcelData = excel.ReadExcelFile(firstFilePath).Tables[0];
             var secondFileExcelData = excel.ReadExcelFile(secondFilePath).Tables[0];
             excel.CompareFiles(firstFileExcelData, secondFileExcelData);
+            MessageBox.Show("Success");
         }
     }
 }
