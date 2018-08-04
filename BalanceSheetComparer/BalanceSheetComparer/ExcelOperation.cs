@@ -110,7 +110,7 @@ namespace BalanceSheetComparer
             return dataSet;
         }
 
-        public void CompareFiles()
+        public void CompareAndGenearteResultFile()
         {
             var firstFileDebits = AllDebits(_firstFileData.Rows);
             var firstFileCredits = AllCredits(_firstFileData.Rows);
@@ -119,10 +119,8 @@ namespace BalanceSheetComparer
             var secondFileCredits = AllCredits(_secondFileData.Rows);
 
             var queries = GenerateQueryForUnMatchedData(
-                firstFileDebits,
-                secondFileDebits,
-                firstFileCredits,
-                secondFileCredits);
+                firstFileDebits, secondFileDebits,
+                firstFileCredits, secondFileCredits);
 
             CompareAndWriteFile(queries);
         }

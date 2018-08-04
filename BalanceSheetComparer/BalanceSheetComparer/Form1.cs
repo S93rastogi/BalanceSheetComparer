@@ -18,7 +18,7 @@ namespace BalanceSheetComparer
             ExcelOperation excel = 
                 new ExcelOperation(firstFilePath, secondFilePath);
 
-            excel.CompareFiles();
+            excel.CompareAndGenearteResultFile();
             MessageBox.Show("Success");
         }
     }
