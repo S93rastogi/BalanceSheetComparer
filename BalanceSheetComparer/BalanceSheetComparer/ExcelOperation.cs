@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.Text;
 using System.IO;
+using System.Linq;
 
 namespace BalanceSheetComparer
 {
@@ -105,7 +106,13 @@ namespace BalanceSheetComparer
             var secondFileDebits = AllDebits(secondFileExcelData.Rows);
             var secondFileCredits = AllCredits(secondFileExcelData.Rows);
 
-            CompareAndWriteFile();
+            var queries = GenerateQueryForUnMatchedData(
+                firstFileDebits,
+                secondFileDebits,
+                firstFileCredits,
+                secondFileCredits);
+
+            CompareAndWriteFile(queries);
         }
 
         private List<double> AllDebits(DataRowCollection dataRowCollection)
@@ -154,7 +161,7 @@ namespace BalanceSheetComparer
             return credits;
         }
 
-        private void CompareAndWriteFile()
+        private void CompareAndWriteFile(List<string> queries)
         {
             var writeFilePath = System.Windows.Forms.Application.StartupPath + "\\ComparedResults.xlsx";
             var connectionString = WriteFileConnectionString(writeFilePath);
@@ -170,17 +177,34 @@ namespace BalanceSheetComparer
                 command.CommandText = "CREATE TABLE [table1] (Information VARCHAR, results NUMBER);";
                 command.ExecuteNonQuery();
 
-                command.CommandText = "INSERT INTO [table1] VALUES('total Debits', 1232.052);";
-                command.ExecuteNonQuery();
-
-                command.CommandText = "INSERT INTO [table1] VALUES('total Credits', 912532.052);";
-                command.ExecuteNonQuery();
-
-                command.CommandText = "INSERT INTO [table1] VALUES('', 89564.55);";
-                command.ExecuteNonQuery();
-
+                foreach (var query in queries)
+                {
+                    command.CommandText = query;
+                    command.ExecuteNonQuery();
+                }
                 connection.Close();
             }
+        }
+
+        private List<string> GenerateQueryForUnMatchedData(
+            List<double> debits1,
+            List<double> debits2,
+            List<double> credits1,
+            List<double> credits2)
+        {
+            var query1 = GenerateQueryForUnMatchedData(debits1, debits2);
+            var query2 = GenerateQueryForUnMatchedData(debits2, debits1);
+            var query3 = GenerateQueryForUnMatchedData(credits1, credits2);
+            var query4 = GenerateQueryForUnMatchedData(credits2, credits1);
+            return query1.Concat(query2).Concat(query3).Concat(query4).ToList();
+        }
+
+        private List<string> GenerateQueryForUnMatchedData(
+            List<double> collection1,
+            List<double> collection2)
+        {
+            var unMatchedData = collection1.Except(collection2);
+            return unMatchedData.Select(x => "INSERT INTO [table1] VALUES ('DebitsCredits', " + x + ");").ToList();
         }
     }
 }
