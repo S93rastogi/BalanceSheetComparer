@@ -10,8 +10,18 @@ namespace BalanceSheetComparer
 {
     class ExcelOperation
     {
+        private readonly string _firstFile;
+        private readonly string _secondFile;
         private const int debitColumnIndex = 2;
         private const int creditColumnIndex = 3;
+
+        internal ExcelOperation(
+            string firstFile,
+            string secondFile)
+        {
+            _firstFile = firstFile;
+            _secondFile = secondFile;
+        }
 
         private string GetConnectionString(string filePath)
         {
