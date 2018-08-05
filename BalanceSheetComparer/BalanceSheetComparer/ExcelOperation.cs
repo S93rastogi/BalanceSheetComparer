@@ -110,12 +110,12 @@ namespace BalanceSheetComparer
             return dataSet;
         }
 
-        public void CompareAndGenearteResultFile()
+        public void CompareAndGenearteResultFile(string outputDirectory)
         {
             var query1 = GenerateQueryForUnMatchedDebits();
             var query2 = GenerateQueryForUnMatchedCredits();
             var queries = query1.Concat(query2).ToList();
-            CompareAndWriteFile(queries);
+            CompareAndWriteFile(queries, outputDirectory);
         }
 
         private List<double> AllDebits(DataRowCollection dataRowCollection)
@@ -164,9 +164,9 @@ namespace BalanceSheetComparer
             return credits;
         }
 
-        private void CompareAndWriteFile(List<string> queries)
+        private void CompareAndWriteFile(List<string> queries, string outputDirectory)
         {
-            var writeFilePath = System.Windows.Forms.Application.StartupPath + "\\ComparedResults.xlsx";
+            var writeFilePath = outputDirectory + "\\ComparedResults.xlsx";
             var connectionString = WriteFileConnectionString(writeFilePath);
             if (File.Exists(writeFilePath))
                 File.Delete(writeFilePath);
