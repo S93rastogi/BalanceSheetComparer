@@ -112,16 +112,9 @@ namespace BalanceSheetComparer
 
         public void CompareAndGenearteResultFile()
         {
-            var firstFileDebits = AllDebits(_firstFileData.Rows);
-            var firstFileCredits = AllCredits(_firstFileData.Rows);
-
-            var secondFileDebits = AllDebits(_secondFileData.Rows);
-            var secondFileCredits = AllCredits(_secondFileData.Rows);
-
-            var queries = GenerateQueryForUnMatchedData(
-                firstFileDebits, secondFileDebits,
-                firstFileCredits, secondFileCredits);
-
+            var query1 = GenerateQueryForUnMatchedDebits();
+            var query2 = GenerateQueryForUnMatchedCredits();
+            var queries = query1.Concat(query2).ToList();
             CompareAndWriteFile(queries);
         }
 
@@ -195,17 +188,28 @@ namespace BalanceSheetComparer
                 connection.Close();
             }
         }
-
-        private List<string> GenerateQueryForUnMatchedData(
-            List<double> debits1,
-            List<double> debits2,
-            List<double> credits1,
-            List<double> credits2)
+        
+        private List<string> GenerateQueryForUnMatchedDebits()
         {
-            var query1 = GenerateQueryForUnMatchedData(debits1, debits2);
-            var query2 = GenerateQueryForUnMatchedData(debits2, debits1);
-            var query3 = GenerateQueryForUnMatchedData(credits1, credits2);
-            var query4 = GenerateQueryForUnMatchedData(credits2, credits1);
+            var firstFileDebits = AllDebits(_firstFileData.Rows);
+            var secondFileDebits = AllDebits(_secondFileData.Rows);
+
+            var query1 = HeaderQueryForUnMatchedDebits(_firstFileName);
+            var query2 = GenerateQueryForUnMatchedData(firstFileDebits, secondFileDebits);
+            var query3 = HeaderQueryForUnMatchedDebits(_secondFileName);
+            var query4 = GenerateQueryForUnMatchedData(secondFileDebits, firstFileDebits);
+            return query1.Concat(query2).Concat(query3).Concat(query4).ToList();
+        }
+
+        private List<string> GenerateQueryForUnMatchedCredits()
+        {
+            var firstFileCredits = AllCredits(_firstFileData.Rows);
+            var secondFileCredits = AllCredits(_secondFileData.Rows);
+
+            var query1 = HeaderQueryForUnMatchedCredits(_firstFileName);
+            var query2 = GenerateQueryForUnMatchedData(firstFileCredits, secondFileCredits);
+            var query3 = HeaderQueryForUnMatchedCredits(_secondFileName);
+            var query4 = GenerateQueryForUnMatchedData(secondFileCredits, firstFileCredits);
             return query1.Concat(query2).Concat(query3).Concat(query4).ToList();
         }
 
@@ -214,7 +218,21 @@ namespace BalanceSheetComparer
             List<double> collection2)
         {
             var unMatchedData = collection1.Except(collection2);
-            return unMatchedData.Select(x => "INSERT INTO [table1] VALUES ('DebitsCredits', " + x + ");").ToList();
+            return unMatchedData.Select(x => "INSERT INTO [table1] VALUES ('', " + x + ");").ToList();
+        }
+
+        private List<string> HeaderQueryForUnMatchedDebits(string fileName)
+        {
+            var query = new List<string>();
+            query.Add("INSERT INTO [table1] VALUES ('UnMatched Debits from " + fileName + "', '');");
+            return query.ToList();
+        }
+
+        private List<string> HeaderQueryForUnMatchedCredits(string fileName)
+        {
+            var query = new List<string>();
+            query.Add("INSERT INTO [table1] VALUES ('UnMatched Credits from " + fileName + "', '');");
+            return query.ToList();
         }
     }
 }
