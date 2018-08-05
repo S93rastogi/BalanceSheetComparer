@@ -10,8 +10,8 @@ namespace BalanceSheetComparer
 {
     class ExcelOperation
     {
-        private readonly string _firstFile;
-        private readonly string _secondFile;
+        private readonly string _firstFileName;
+        private readonly string _secondFileName;
         private readonly DataTable _firstFileData;
         private readonly DataTable _secondFileData;
         private const int debitColumnIndex = 2;
@@ -21,10 +21,10 @@ namespace BalanceSheetComparer
             string firstFile,
             string secondFile)
         {
-            _firstFile = firstFile;
-            _secondFile = secondFile;
-            _firstFileData = ReadExcelFile(_firstFile).Tables[0];
-            _secondFileData = ReadExcelFile(_secondFile).Tables[0];
+            _firstFileName = Path.GetFileNameWithoutExtension(firstFile);
+            _secondFileName = Path.GetFileNameWithoutExtension(secondFile);
+            _firstFileData = ReadExcelFile(firstFile).Tables[0];
+            _secondFileData = ReadExcelFile(secondFile).Tables[0];
         }
 
         private string GetConnectionString(string filePath)
