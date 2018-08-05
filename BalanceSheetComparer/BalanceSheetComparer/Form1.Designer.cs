@@ -33,6 +33,8 @@
             this.firstBalanceSheet = new System.Windows.Forms.TextBox();
             this.secondBalanceSheeet = new System.Windows.Forms.TextBox();
             this.generateReport = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.outputLocation = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -69,7 +71,7 @@
             // 
             // generateReport
             // 
-            this.generateReport.Location = new System.Drawing.Point(228, 121);
+            this.generateReport.Location = new System.Drawing.Point(242, 163);
             this.generateReport.Name = "generateReport";
             this.generateReport.Size = new System.Drawing.Size(114, 35);
             this.generateReport.TabIndex = 4;
@@ -77,11 +79,29 @@
             this.generateReport.UseVisualStyleBackColor = true;
             this.generateReport.Click += new System.EventHandler(this.generateReport_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(79, 109);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(83, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Output Location";
+            // 
+            // outputLocation
+            // 
+            this.outputLocation.Location = new System.Drawing.Point(242, 109);
+            this.outputLocation.Name = "outputLocation";
+            this.outputLocation.Size = new System.Drawing.Size(264, 20);
+            this.outputLocation.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.outputLocation);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.generateReport);
             this.Controls.Add(this.secondBalanceSheeet);
             this.Controls.Add(this.firstBalanceSheet);
@@ -101,6 +121,8 @@
         private System.Windows.Forms.TextBox firstBalanceSheet;
         private System.Windows.Forms.TextBox secondBalanceSheeet;
         private System.Windows.Forms.Button generateReport;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox outputLocation;
     }
 }
 
